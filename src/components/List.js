@@ -1,27 +1,56 @@
-import { Item } from "./Item";
-import { useDroppable } from '@dnd-kit/core';
+import {
+  useSensors, useSensor, PointerSensor, KeyboardSensor, DndContext, closestCenter
+} from '@dnd-kit/core';
+import {
+  sortableKeyboardCoordinates, arrayMove, SortableContext, verticalListSortingStrategy
+} from '@dnd-kit/sortable';
+import { useState } from "react";
+import { SortableItem } from "./SortableItem";
 
 const List = () => {
-  const {isOver, setNodeRef} = useDroppable({
-    id: 'droppable',
-  });
+  const defaultItems = [
+    'Imagine Dragons',
+    'Here comes the kraken',
+    'Bullet from my Valentine',
+    'Bring me the horizon'
+  ]
+  const [items, setItems] = useState(defaultItems)
 
-  const defualtStyle = {
-    width: '500px',
-    height: '500px',
-    display: 'flex',
-    gap: '10px',
-    border: '1px solid red',
-    color: isOver ? 'green' : '#d4d4d4',
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates
+    })
+  )
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+
+    if (active.id !== over.id) {
+      setItems((items) => {
+        const oldIndex = items.indexOf(active.id);
+        const newIndex = items.indexOf(over.id);
+
+        return arrayMove(items, oldIndex, newIndex);
+      })
+    }
   }
 
   return (
-    <div ref={setNodeRef} style={defualtStyle }>
-      <Item text="Imagine Dragons" itemId="imagine-dragons" />
-      <Item text="Here comes the kraken" itemId="hctk" />
-      <Item text="Bullet from my Valentine" itemId="bfmv"/>
-      <Item text="Bring me the horizon" itemId="bring-me-the-horizon" />
-    </div>
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+    >
+      <SortableContext
+        items={items}
+        strategy={verticalListSortingStrategy}
+      >
+        { items.map((item) => (
+          <SortableItem key={item} itemId={item} text={item} />
+        )) }
+      </SortableContext>
+    </DndContext>
   );
 };
 
