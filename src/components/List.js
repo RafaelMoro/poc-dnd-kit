@@ -1,9 +1,13 @@
 import {
-  useSensors, useSensor, PointerSensor, KeyboardSensor, DndContext, closestCenter
+  useSensors, useSensor, PointerSensor, KeyboardSensor, DndContext, closestCenter, closestCorners, pointerWithin
 } from '@dnd-kit/core';
 import {
   sortableKeyboardCoordinates, arrayMove, SortableContext, verticalListSortingStrategy
 } from '@dnd-kit/sortable';
+import {
+  restrictToParentElement,
+} from '@dnd-kit/modifiers';
+import { customCollisionDetectionAlgorithm } from '../customCollisionAlgorithm';
 import { useState } from "react";
 import { SortableItem } from "./SortableItem";
 
@@ -24,9 +28,10 @@ const List = () => {
   )
 
   const handleDragEnd = (event) => {
-    const { active, over } = event;
+    const { active = {}, over = {} } = event;
+    console.log(event);
 
-    if (active.id !== over.id) {
+    if ((active?.id) && (over?.id) && (active?.id !== over?.id)) {
       setItems((items) => {
         const oldIndex = items.indexOf(active.id);
         const newIndex = items.indexOf(over.id);
@@ -36,10 +41,15 @@ const List = () => {
     }
   }
 
+  const handleDragMove = (event) => {
+    // console.log(event.delta);
+  }
+
   return (
     <DndContext
       sensors={sensors}
-      collisionDetection={closestCenter}
+      onDragMove={handleDragMove}
+      collisionDetection={pointerWithin}
       onDragEnd={handleDragEnd}
     >
       <SortableContext
