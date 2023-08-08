@@ -10,8 +10,8 @@ function App() {
   const ListStyle = {
     border: '1px solid grey',
     padding: '10px',
-    width: '250px',
-    height: '150px'
+    width: '750px',
+    height: '750px'
   }
   return (
     <main style={mainStyles}>
