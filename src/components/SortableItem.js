@@ -13,21 +13,19 @@ const SortableItem = ({ text, itemId, animateLayoutChanges, disabled }) => {
     isDragging,
   } = useSortable({id: itemId, animateLayoutChanges, disabled});
 
-  console.log(transition);
-
-  const sortableItemStyles = {
+  const wrapperStyles = {
+    transform: CSS.Transform.toString(transform),
     transition,
-    '--translate-x': transform ? `${Math.round(transform.x)}px` : undefined,
-    '--translate-y': transform ? `${Math.round(transform.y)}px` : undefined,
-    '--scale-x': transform?.scaleX ? `${transform.scaleX}` : undefined,
-    '--scale-y': transform?.scaleY ? `${transform.scaleY}` : undefined,
-  };
+  }
+
+  const wrapperClasses = isDragging ? 'Wrapper dragOverlay' : 'Wrapper'
+  const itemClasses = isDragging ? 'Item dragOverlay' : 'Item'
 
   return (
   <div
-    className='Wrapper'
-    style={sortableItemStyles}>
-      <div className='Item'>
+    className={wrapperClasses}
+    style={wrapperStyles}>
+      <div className={itemClasses}>
         <button
           ref={setNodeRef}
           {...listeners}

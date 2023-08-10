@@ -1,5 +1,5 @@
 import {
-  useSensors, useSensor, PointerSensor, KeyboardSensor, DndContext, pointerWithin, closestCenter
+  useSensors, useSensor, PointerSensor, KeyboardSensor, DndContext, pointerWithin, closestCenter, DragOverlay
 } from '@dnd-kit/core';
 import {
   sortableKeyboardCoordinates, arrayMove, SortableContext, verticalListSortingStrategy
@@ -17,6 +17,7 @@ const List = () => {
     'Bring me the horizon'
   ]
   const [items, setItems] = useState(defaultItems)
+  const [activeId, setActiveId] = useState(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -25,9 +26,13 @@ const List = () => {
     })
   )
 
+  const handleDragStart = (event) => {
+    const { active } = event;
+    setActiveId(active.id);
+  }
+
   const handleDragEnd = (event) => {
     const { active = {}, over = {} } = event;
-    console.log(event);
 
     if ((active?.id) && (over?.id) && (active?.id !== over?.id)) {
       setItems((items) => {
@@ -36,6 +41,7 @@ const List = () => {
 
         return arrayMove(items, oldIndex, newIndex);
       })
+      setActiveId(null);
     }
   }
 
@@ -48,6 +54,7 @@ const List = () => {
       sensors={sensors}
       onDragMove={handleDragMove}
       collisionDetection={closestCenter}
+      onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
       <SortableContext
@@ -60,6 +67,9 @@ const List = () => {
           )) }
         </div>
       </SortableContext>
+      <DragOverlay>
+        { (!!activeId) && (<SortableItem itemId={activeId} text={activeId} />) }
+      </DragOverlay>
     </DndContext>
   );
 };
