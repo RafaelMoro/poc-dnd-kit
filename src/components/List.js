@@ -68,7 +68,7 @@ const List = () => {
         </div>
       </SortableContext>
       <DragOverlay>
-        { (!!activeId) && (<SortableItem itemId={activeId} text={activeId} />) }
+        { (!!activeId) && (<SortableItem itemId={activeId} text={activeId} dragOverlay />) }
       </DragOverlay>
     </DndContext>
   );

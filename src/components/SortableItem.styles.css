@@ -4,70 +4,34 @@
   --box-shadow: var(--box-shadow-border) var(--box-shadow-common);
 }
 
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-@keyframes mount {
-  0%,
-  40% {
-    transform: translate3d(0, calc(var(--index, 1) * -38px), 0) scale(1.1)
-      rotateX(60deg) rotateZ(10deg);
-    box-shadow: 1px 1px 0 1px #e5e5e7;
-  }
-
-  100% {
-    transform: translate3d(0, 0, 0) scale(1) rotateX(60deg) rotateZ(33deg);
-    box-shadow: var(--box-shadow);
-  }
-}
-
-@keyframes pop-transform {
-  0% {
-    transform: scale(1) translate3d(var(--translate-x, 0), 0, 0) rotateX(60deg) rotateZ(33deg);
-    box-shadow: 1px 1px 0 1px #f9f9fb, -1px 0 28px 0 rgba(34, 33, 81, 0.01),
-      28px 28px 28px 0 rgba(34, 33, 81, 0.25);
-  }
-  100% {
-    transform: scale(1.075) translate3d(var(--translate-x, 0), 0, 0) rotateX(60deg) rotateZ(33deg);
-    box-shadow: var(--box-shadow);
-  }
-}
-
 .Wrapper {
-  background-color: skyblue;
-  box-sizing: border-box;
-  touch-action: manipulation;
-  transform: translate3d(var(--translate-x, 0), var(--translate-y, 0), 0)
-    scaleX(var(--scale-x, 1)) scaleY(var(--scale-y, 1));
   transform-origin: 0 0;
   touch-action: manipulation;
 
   &.dragOverlay {
-    --scale: 1.05;
-    --box-shadow: var(--box-shadow);
-    --box-shadow-picked-up: var(--box-shadow-border),
-      -1px 0 15px 0 rgba(34, 33, 81, 0.01),
-      0px 15px 15px 0 rgba(34, 33, 81, 0.25);
+    scale: 1.05;
     z-index: 999;
   }
 }
 
 .Item {
-  box-sizing: border-box;
-  background-color: #fff;
-  position: relative;
-  border-radius: calc(4px / var(--scale-x, 1));
+  width: 100%;
+  height: 50px;
+  border-radius: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  place-items: center;
+  border: solid 1px black;
   transform-origin: 50% 50%;
 
+  &.dragging:not(.dragOverlay) {
+    background-color: yellow;
+    opacity: 0.5;
+  }
+
   &.dragOverlay {
-    background-color: skyblue;
-    opacity: 0;
+    background-color: blue;
+    color: black;
   }
 }
 

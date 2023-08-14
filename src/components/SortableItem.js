@@ -1,9 +1,9 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { MoveIcon } from './MoveIcon';
 import './SortableItem.styles.css'
+import { MoveIcon } from './MoveIcon';
 
-const SortableItem = ({ text, itemId, animateLayoutChanges, disabled }) => {
+const SortableItem = ({ text, itemId, dragOverlay }) => {
   const {
     attributes,
     listeners,
@@ -11,21 +11,22 @@ const SortableItem = ({ text, itemId, animateLayoutChanges, disabled }) => {
     transform,
     transition,
     isDragging,
-  } = useSortable({id: itemId, animateLayoutChanges, disabled});
+  } = useSortable({id: itemId});
 
   const wrapperStyles = {
     transform: CSS.Transform.toString(transform),
     transition,
   }
 
-  const wrapperClasses = isDragging ? 'Wrapper dragOverlay' : 'Wrapper'
-  const itemClasses = isDragging ? 'Item dragOverlay' : 'Item'
+  const wrapperClasses = dragOverlay ? 'Wrapper dragOverlay' : 'Wrapper'
+  const draggingClass = isDragging ? 'dragOverlay' : ''
+  const dragOverlayClass = dragOverlay ? 'dragOverlay' : ''
 
   return (
   <div
     className={wrapperClasses}
     style={wrapperStyles}>
-      <div className={itemClasses}>
+      <div className={`Item ${draggingClass} ${dragOverlayClass}`}>
         <button
           ref={setNodeRef}
           {...listeners}
