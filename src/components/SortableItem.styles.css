@@ -30,7 +30,7 @@
   }
 
   &.dragOverlay {
-    background-color: blue;
+    background-color: skyblue;
     color: black;
   }
 }

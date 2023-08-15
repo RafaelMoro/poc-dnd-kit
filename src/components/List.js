@@ -1,5 +1,5 @@
 import {
-  useSensors, useSensor, PointerSensor, KeyboardSensor, DndContext, pointerWithin, closestCenter, DragOverlay
+  useSensors, useSensor, PointerSensor, KeyboardSensor, DndContext, closestCenter, DragOverlay
 } from '@dnd-kit/core';
 import {
   sortableKeyboardCoordinates, arrayMove, SortableContext, verticalListSortingStrategy
@@ -45,14 +45,9 @@ const List = () => {
     }
   }
 
-  const handleDragMove = (event) => {
-    // console.log(event.delta);
-  }
-
   return (
     <DndContext
       sensors={sensors}
-      onDragMove={handleDragMove}
       collisionDetection={closestCenter}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
