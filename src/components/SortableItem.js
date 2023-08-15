@@ -1,7 +1,7 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import './SortableItem.styles.css'
-import { MoveIcon } from './MoveIcon';
+import { Item } from './Item';
 
 const SortableItem = ({ text, itemId, dragOverlay }) => {
   const {
@@ -23,20 +23,16 @@ const SortableItem = ({ text, itemId, dragOverlay }) => {
   const dragOverlayClass = dragOverlay ? 'dragOverlay' : ''
 
   return (
-  <div
-    className={wrapperClasses}
-    style={wrapperStyles}>
-      <div className={`Item ${draggingClass} ${dragOverlayClass}`}>
-        <button
-          ref={setNodeRef}
-          {...listeners}
-          {...attributes}
-        >
-          <MoveIcon />
-        </button>
-        { text }
-      </div>
-  </div>
+  <Item
+    text={text}
+    wrapperClasses={wrapperClasses}
+    wrapperStyles={wrapperStyles}
+    draggingClass={draggingClass}
+    dragOverlayClass={dragOverlayClass}
+    listeners={listeners}
+    attributes={attributes}
+    ref={setNodeRef}
+  />
   );
 };
 

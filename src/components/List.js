@@ -1,6 +1,7 @@
 import {
   useSensors, useSensor, PointerSensor, KeyboardSensor, DndContext, closestCenter, DragOverlay
 } from '@dnd-kit/core';
+import { createPortal } from 'react-dom';
 import {
   sortableKeyboardCoordinates, arrayMove, SortableContext, verticalListSortingStrategy
 } from '@dnd-kit/sortable';
@@ -45,6 +46,12 @@ const List = () => {
     }
   }
 
+  const dragOverlayElement = createPortal(
+    <DragOverlay>
+      { (!!activeId) && (<SortableItem itemId={activeId} text={activeId} dragOverlay />) }
+    </DragOverlay>, document.body
+  )
+
   return (
     <DndContext
       sensors={sensors}
@@ -62,9 +69,7 @@ const List = () => {
           )) }
         </div>
       </SortableContext>
-      <DragOverlay>
-        { (!!activeId) && (<SortableItem itemId={activeId} text={activeId} dragOverlay />) }
-      </DragOverlay>
+      { dragOverlayElement }
     </DndContext>
   );
 };
