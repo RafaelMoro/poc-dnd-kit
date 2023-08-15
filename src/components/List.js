@@ -9,6 +9,7 @@ import { useState } from "react";
 
 import { SortableItem } from "./SortableItem";
 import './SortableItem.styles.css'
+import { Item } from './Item';
 
 const List = () => {
   const defaultItems = [
@@ -48,7 +49,7 @@ const List = () => {
 
   const dragOverlayElement = createPortal(
     <DragOverlay>
-      { (!!activeId) && (<SortableItem itemId={activeId} text={activeId} dragOverlay />) }
+      { (!!activeId) && (<Item text={activeId} dragOverlay />) }
     </DragOverlay>, document.body
   )
 
